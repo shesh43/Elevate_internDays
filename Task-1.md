@@ -98,3 +98,165 @@ Wireshark is a **network protocol analyzer** used to capture and inspect packets
 - we can analyze each communcation that two ip addresses were communication
 - as we can that source and destination
 - also they workin' on and also syn and ack to confirm to continue the communication
+
+
+
+## Interview based Question and Answer 
+---
+## 1. What is an Open Port?
+A port is a **logical communication endpoint** on a system. An open port means a service or application is **actively listening** on that port, ready to accept connections.
+
+> Think of it like a building — the IP address is the building, and ports are the doors. An open port is an **unlocked, open door** where someone is waiting inside.
+
+- Ports range from **0 to 65535**
+- Well-known ports: **80 (HTTP), 443 (HTTPS), 22 (SSH), 21 (FTP)**
+
+---
+
+## 2. How Does Nmap Perform a TCP SYN Scan?
+
+TCP SYN scan is Nmap's **default and most popular scan** — also called a **Half-Open Scan** or **Stealth Scan.**
+
+**How it works:**
+
+```
+Nmap → sends SYN packet to target port
+
+If port is OPEN:
+Target replies SYN-ACK
+Nmap sends RST (reset) — never completes handshake
+
+If port is CLOSED:
+Target replies RST immediately
+
+If port is FILTERED:
+No response (firewall dropped the packet)
+```
+
+**Why it's stealthy:**
+
+- Full TCP connection is **never completed**
+- Many older systems and basic firewalls **don't log incomplete connections**
+- Faster than full connect scan
+
+**Command:**
+
+bash
+
+```bash
+nmap -sS 192.168.1.1
+```
+
+---
+
+## 3. What Risks Are Associated with Open Ports?
+
+|Risk|Explanation|
+|---|---|
+|**Attack Surface**|Every open port is a potential entry point|
+|**Service Exploitation**|Vulnerable service on that port can be exploited|
+|**Information Disclosure**|Port + banner reveals OS, software, version|
+|**Brute Force**|SSH (22), RDP (3389) open = brute force target|
+|**Unauthorized Access**|Misconfigured services allow direct access|
+|**Lateral Movement**|Attacker uses internal open ports to move across network|
+
+> **Simple truth:** Every unnecessary open port is an **unnecessary risk.**
+
+---
+
+## 4. Difference Between TCP and UDP Scanning
+
+|Factor|TCP Scanning|UDP Scanning|
+|---|---|---|
+|**Connection**|Connection-oriented — has handshake|Connectionless — no handshake|
+|**Reliability**|Response always comes back|No response = open OR filtered (ambiguous)|
+|**Speed**|Faster — clear open/closed response|Slow — relies on timeouts|
+|**Detection**|Easier to detect|Harder to detect|
+|**How open is identified**|SYN-ACK reply = open|No response = likely open|
+|**How closed is identified**|RST reply = closed|ICMP Port Unreachable = closed|
+|**Common ports**|80, 443, 22, 3306|53 (DNS), 161 (SNMP), 67 (DHCP)|
+
+**Nmap commands:**
+
+bash
+
+```bash
+nmap -sS 192.168.1.1    ← TCP SYN scan
+nmap -sU 192.168.1.1    ← UDP scan
+```
+
+> **Key insight:** UDP scanning is harder because **silence doesn't always mean closed** — it could be open and just not responding.
+
+---
+
+## 5. How Can Open Ports Be Secured?
+
+1. **Close unnecessary ports** — if no service needs it, shut it down
+2. **Firewall rules** — whitelist only required ports per source IP
+3. **Use non-default ports** — move SSH from 22 to a custom port (security by obscurity, not a fix alone)
+4. **Keep services patched** — vulnerable services on open ports are prime targets
+5. **Disable banner grabbing** — don't let services reveal version info
+6. **Use VPN for sensitive services** — RDP, SSH should not be publicly open
+7. **Network segmentation** — internal services should never be exposed externally
+8. **IDS/IPS monitoring** — alert on unusual port activity or scanning behavior
+
+---
+
+## 6. What is a Firewall's Role Regarding Ports?
+
+A firewall acts as a **gatekeeper** between the network and the outside world. Its job regarding ports:
+
+- **Allow** traffic only on permitted ports
+- **Block/Drop** traffic on all other ports
+- **Filter by direction** — inbound vs outbound rules
+- **Filter by source** — only allow specific IPs to reach specific ports
+- **Stateful inspection** — track active connections, block unsolicited packets
+
+```
+Internet → Firewall → Only port 443 allowed → Web Server
+                    → Port 22 blocked       → SSH (protected)
+                    → Port 3306 blocked     → Database (never exposed)
+```
+
+> **Firewall doesn't close ports — it controls WHO can reach them and from WHERE.**
+
+---
+
+## 7. What is a Port Scan and Why Do Attackers Perform It?
+
+A **port scan** is the process of systematically probing a target's ports to discover which ones are **open, closed, or filtered** — and what services are running on them.
+
+**Why attackers do it:**
+
+|Reason|Purpose|
+|---|---|
+|**Reconnaissance**|Map the attack surface before launching an attack|
+|**Service discovery**|Find what software is running and its version|
+|**Vulnerability identification**|Match open services to known CVEs|
+|**Finding weak points**|Old FTP, Telnet, unpatched SSH = easy entry|
+|**Network mapping**|Understand the internal structure of the target|
+
+**Attacker's thought process:**
+
+```
+Port 22 open (SSH) → Try brute force or exploit known CVE
+Port 21 open (FTP) → Try anonymous login
+Port 8080 open (HTTP) → Check for admin panel, default creds
+Port 27017 open (MongoDB) → Try connecting without authentication
+```
+
+> **Port scanning is not an attack itself — it's the attacker's intelligence gathering phase.**
+
+---
+
+## 8. How Does Wireshark Complement Port Scanning?
+
+Nmap tells you **what is open.** Wireshark tells you **what is happening.**
+
+| Nmap                  | Wireshark                              |
+| --------------------- | -------------------------------------- |
+| Discovers open ports  | Captures actual packets on those ports |
+| Identifies services   | Reveals what data is being transmitted |
+| Active — sends probes | Passive — just listens and captures    |
+| High-level results    | Packet-level deep inspection           |
+| Used for scanning     | Used for traffic analysis              |
