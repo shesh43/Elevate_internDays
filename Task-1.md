@@ -97,6 +97,7 @@ Wireshark is a **network protocol analyzer** used to capture and inspect packets
 - as you can see the image 
 - we can analyze each communcation that two ip addresses were communication
 - as we can that source and destination
+<<<<<<< HEAD
 - also they workin' on and also syn and ack to confirm to continue the communication
 
 
@@ -263,3 +264,6 @@ Nmap tells you **what is open.** Wireshark tells you **what is happening.**
 
 
 thank you
+=======
+- also they workin' on and also syn and ack to confirm to continue the communication
+>>>>>>> f186967d648b10ef67c992411d5d3251c6953019
