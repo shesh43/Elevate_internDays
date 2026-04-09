@@ -260,3 +260,6 @@ Nmap tells you **what is open.** Wireshark tells you **what is happening.**
 | Active — sends probes | Passive — just listens and captures    |
 | High-level results    | Packet-level deep inspection           |
 | Used for scanning     | Used for traffic analysis              |
+
+
+thank you
