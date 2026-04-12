@@ -21,12 +21,13 @@
 ## Practical
 #### Finding Network interface IP addresses
 **command** : ifconfig
+![[Screenshot 2026-04-09 171110.png]]
 - whenever you have to find any devices either it maybe under you IP address or any target
 - first know what is your or target IP address
 - as for now i am working on my machine,  i need to find network interface's that were under mine IP address
 - to find or look what mine IP address is **ifconfig** 
 - ifconfig, to view or configure network interface IP addresses and settings in one command.
-- ![[Pasted image 20260409171414.png]]
+- 
 
 ##### These are PRIVATE IP addresses
 - 10.0.2.15     → Private range (Class A private)
@@ -42,7 +43,7 @@
 - but to find network interfaces we need to do scan under subnet
 - because as this all kind of network interfaces were connected to or under mine Ip address network
 - mine IP address is :- **10.0.2.15**
-- ![[Pasted image 20260409171115.png]]
+- 
 
 - by this we will come to know which IP were alive and 
 - also shows open ports and sometimes it will show us closed or filtered 
