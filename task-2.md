@@ -65,6 +65,8 @@ This is a **social engineering tactic** designed to create panic and make the vi
 
 These errors are common in phishing emails, often because they are written by non-native speakers or auto-generated.
 
+## Interview Quetions ans Answers
+
 1) What is phishing?
 
 "Phishing is a social engineering attack where attackers impersonate legitimate entities through fake emails or websites to steal credentials, financial data, or personal information. It exploits human trust rather than technical vulnerabilities."
